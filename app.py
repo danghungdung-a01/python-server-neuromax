@@ -109,7 +109,7 @@ class ExcelService:
 
 class TTSService:
     def __init__(self):
-        self.api_key = "sk_f66f2fafece03e23435b8f7f5584883197bdb08ef8a02d55"
+        self.api_key = "sk_4d0dc5411a2263e61db38e2a77a24327204c566ad7704a6d"
         self.base_url = "https://api.elevenlabs.io"
         self.session = requests.Session()
         self.session.headers.update({
@@ -145,10 +145,7 @@ class TTSService:
                 "voice_settings": voice_settings,
                 "return_alignment": True
             }
-            print(self.api_key)
-            print(self.base_url)
-            print(self.session)
-
+            print("🔑 ELEVENLABS_API_KEY:", os.getenv("ELEVENLABS_API_KEY"))
             response = self.session.post(url, json=payload, timeout=60)
             response.raise_for_status()
             

@@ -17,3 +17,5 @@ requests==2.32.3
 
 # --- Optional (đề phòng project bạn có xử lý file tạm, threading, JSON, v.v.) ---
 aiofiles==24.1.0
+
+openpyxl==3.1.5

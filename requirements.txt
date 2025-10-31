@@ -1,7 +1,17 @@
-Flask
-Flask-Cors
-python-dotenv
-requests
-gunicorn
-pandas
-supabase-py
+# --- Web framework ---
+Flask==3.0.3
+gunicorn==22.0.0
+
+# --- Supabase ---
+supabase==2.5.1
+
+# --- Audio processing ---
+pydub==0.25.1
+rubberband==0.3.0
+
+# --- Networking & utils ---
+requests==2.32.3
+python-dotenv==1.0.1
+
+# --- Optional: nếu bạn xử lý file lớn hoặc dùng JSON ---
+numpy==2.1.1

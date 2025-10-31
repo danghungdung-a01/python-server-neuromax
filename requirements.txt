@@ -1,7 +1,7 @@
 Flask
 Flask-Cors
 python-dotenv
-pandas
-openpyxl
 requests
 gunicorn
+pandas
+supabase-py

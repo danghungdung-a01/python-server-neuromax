@@ -1,0 +1,41 @@
+services:
+  - type: web
+    name: flask-audio-server
+    env: python
+    plan: free
+    autoDeploy: true
+
+    buildCommand: |
+      apt-get update && apt-get install -y \
+        ffmpeg \
+        libsndfile1 \
+        libavcodec-extra \
+        rubberband-cli
+      pip install -r requirements.txt
+
+    startCommand: gunicorn app:app --bind 0.0.0.0:$PORT
+
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11
+
+      - key: ELEVENLABS_API_KEY
+        sync: false
+
+      - key: SUPABASE_URL
+        sync: false
+
+      - key: SUPABASE_KEY
+        sync: false
+
+      - key: VOICE_ID
+        value: "GUDYcgRAONiI1nXDcNQQ"
+
+      - key: MODEL_ID
+        value: "eleven_multilingual_v2"
+
+      - key: ENABLE_PYTHON_PROCESSING
+        value: "true"
+
+      - key: STORAGE_PATH
+        value: "storage"

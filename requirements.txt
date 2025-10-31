@@ -7,7 +7,6 @@ supabase==2.5.1
 
 # --- Audio processing ---
 pydub==0.25.1
-rubberband==0.3.0
 
 # --- Networking & utils ---
 requests==2.32.3

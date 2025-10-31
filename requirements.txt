@@ -1,9 +1,19 @@
+# --- Web Framework ---
 Flask==3.0.3
 Flask-Cors==4.0.1
 gunicorn==22.0.0
+
+# --- Database / Backend ---
 supabase==2.5.1
-pydub==0.25.1
-requests==2.32.3
 python-dotenv==1.0.1
+
+# --- Audio Processing ---
+pydub==0.25.1
 numpy==2.1.1
+
+# --- Data / Utilities ---
 pandas==2.2.3
+requests==2.32.3
+
+# --- Optional (đề phòng project bạn có xử lý file tạm, threading, JSON, v.v.) ---
+aiofiles==24.1.0

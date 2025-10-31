@@ -109,7 +109,7 @@ class ExcelService:
 
 class TTSService:
     def __init__(self):
-        self.api_key = ELEVENLABS_API_KEY
+        self.api_key = "sk_f66f2fafece03e23435b8f7f5584883197bdb08ef8a02d55"
         self.base_url = "https://api.elevenlabs.io"
         self.session = requests.Session()
         self.session.headers.update({

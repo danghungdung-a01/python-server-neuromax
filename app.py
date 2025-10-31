@@ -32,7 +32,7 @@ CORS(app)
 
 
 STORAGE_PATH = os.getenv('STORAGE_PATH', 'storage')
-ELEVENLABS_API_KEY = os.getenv('ELEVENLABS_API_KEY', 'sk_f66f2fafece03e23435b8f7f5584883197bdb08ef8a02d55')
+ELEVENLABS_API_KEY = os.getenv('ELEVENLABS_API_KEY')
 SUPABASE_URL = os.getenv('SUPABASE_URL')
 SUPABASE_KEY = os.getenv('SUPABASE_KEY')
 VOICE_ID = os.getenv('VOICE_ID', 'GUDYcgRAONiI1nXDcNQQ')
@@ -145,7 +145,10 @@ class TTSService:
                 "voice_settings": voice_settings,
                 "return_alignment": True
             }
-            
+            print(self.api_key)
+            print(self.base_url)
+            print(self.session)
+
             response = self.session.post(url, json=payload, timeout=60)
             response.raise_for_status()
             

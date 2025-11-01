@@ -1,29 +1,38 @@
-# Use official Python image
-FROM python:3.13-slim
+# ==============
+# Stage 1: Base Image
+# ==============
+FROM python:3.11-slim
 
-# Set working directory
-WORKDIR /app
-
-# Install system dependencies
+# Install required system packages
 RUN apt-get update && apt-get install -y --no-install-recommends \
     ffmpeg \
-    libsndfile1 \
     rubberband-cli \
-    libavcodec-extra \
+    libsndfile1 \
     && rm -rf /var/lib/apt/lists/*
 
-# Copy requirements
+# ==============
+# Stage 2: Application setup
+# ==============
+WORKDIR /app
+
+# Copy Python dependencies
 COPY requirements.txt .
+
+# Install dependencies
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy app code
+# Copy all app files
 COPY . .
 
-# Expose port
-EXPOSE 10000
+# Create storage directory (avoid errors)
+RUN mkdir -p storage
 
-# Set environment variable for Flask
-ENV FLASK_ENV=production
+# Set environment variables
+ENV PORT=5000
+ENV PYTHONUNBUFFERED=1
 
-# Run Gunicorn with higher timeout
-CMD ["gunicorn", "app:app", "--bind", "0.0.0.0:10000", "--workers", "2", "--timeout", "120"]
+# Expose Flask port
+EXPOSE 5000
+
+# Start the app using Gunicorn (recommended for production)
+CMD ["gunicorn", "-b", "0.0.0.0:5000", "app:app"]

@@ -19,11 +19,6 @@ import logging
 import subprocess
 
 
-
-# from src.Services.rubberband_selective_processor_v2 import normalize_audio_selectively_v2 as process_r2
-# from src.Services.R3_selective_processor import normalize_audio_selectively_v2 as process_r3
-
-
 load_dotenv()
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -109,7 +104,7 @@ class ExcelService:
 
 class TTSService:
     def __init__(self):
-        self.api_key = "sk_4d0dc5411a2263e61db38e2a77a24327204c566ad7704a6d"
+        self.api_key = ELEVENLABS_API_KEY
         self.base_url = "https://api.elevenlabs.io"
         self.session = requests.Session()
         self.session.headers.update({
@@ -669,10 +664,6 @@ def index():
             '/api/process': 'Main audio processing endpoint (POST)'
         }
     })
-
-
-# if __name__ == '__main__':
-#     app.run(host='0.0.0.0', port=5000, debug=True)
 
 if __name__ == '__main__':
     port = int(os.environ.get("PORT", 5000))

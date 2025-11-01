@@ -140,7 +140,6 @@ class TTSService:
                     "return_alignment": True
                 }
 
-                # 🕵️ Debug: Kiểm tra giá trị API key và headers thật sự
                 logger.warning(f"[DEBUG] ELEVENLABS_API_KEY from env: {os.getenv('ELEVENLABS_API_KEY')}")
                 logger.warning(f"[DEBUG] ELEVENLABS_API_KEY in self: {self.api_key}")
                 logger.warning(f"[DEBUG] Request headers: {self.session.headers}")

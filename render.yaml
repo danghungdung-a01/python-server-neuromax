@@ -1,31 +1,23 @@
 services:
   - type: web
     name: flask-audio-server
-    env: python
-    plan: free
+    env: docker
+    plan: starter # free plan không cài được apt-get, nên dùng docker
     autoDeploy: true
 
-    buildCommand: |
-      apt-get update && apt-get install -y \
-        ffmpeg \
-        libsndfile1 \
-        libavcodec-extra \
-        rubberband-cli
-      pip install -r requirements.txt
-
-    startCommand: gunicorn app:app --bind 0.0.0.0:$PORT
+    dockerfilePath: ./Dockerfile
 
     envVars:
-      - key: PYTHON_VERSION
-        value: 3.11
-
       - key: ELEVENLABS_API_KEY
+        value: "sk_..." # nhập key hợp lệ ở đây
         sync: false
 
       - key: SUPABASE_URL
+        value: "https://xyz.supabase.co"
         sync: false
 
       - key: SUPABASE_KEY
+        value: "..."
         sync: false
 
       - key: VOICE_ID

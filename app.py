@@ -102,7 +102,6 @@ class ExcelService:
         combined = combined.replace(". ", "... ")
         return combined
 
-
 class TTSService:
     def __init__(self):
         self.api_key = ELEVENLABS_API_KEY
@@ -113,37 +112,52 @@ class TTSService:
             'Accept': 'application/json',
             'Content-Type': 'application/json'
         })
-
-    def synthesize_with_alignment(self, voice_id: str, model_id: str, text: str, voice_settings) -> Optional[Dict[str, Any]]:
+    
+    def get_remaining_credits(self) -> Optional[int]:
         try:
-            url = f"{self.base_url}/v1/text-to-speech/{voice_id}/with-timestamps"
-            payload = {
-                "model_id": model_id,
-                "text": text,
-                "output_format": "mp3_44100_192",
-                "voice_settings": voice_settings,
-                "return_alignment": True
-            }
-
-            # 🕵️ Debug: Kiểm tra giá trị API key và headers thật sự
-            logger.warning(f"[DEBUG] ELEVENLABS_API_KEY from env: {os.getenv('ELEVENLABS_API_KEY')}")
-            logger.warning(f"[DEBUG] ELEVENLABS_API_KEY in self: {self.api_key}")
-            logger.warning(f"[DEBUG] Request headers: {self.session.headers}")
-
-            response = self.session.post(url, json=payload, timeout=60)
+            response = self.session.get(f"{self.base_url}/v1/user")
             response.raise_for_status()
-
-            return response.json()
-
-        except requests.exceptions.RequestException as e:
-            logger.error(f"TTS synthesis failed: {e}")
-            if e.response is not None:
-                logger.error(f"Response: {e.response.status_code} - {e.response.text}")
-            return None
+            data = response.json()
+            used = data.get('subscription', {}).get('character_count', 0)
+            limit = data.get('subscription', {}).get('character_limit', 0)
+            if limit <= 0:
+                logger.warning("No character limit found in response")
+                return None
+            
+            return max(0, limit - used)
         except Exception as e:
-            logger.error(f"Unexpected error during synthesis: {e}")
+            logger.error(f"Error getting remaining credits: {e}")
             return None
+    
+    def synthesize_with_alignment(self, voice_id: str, model_id: str, text: str, voice_settings) -> Optional[Dict[str, Any]]:
+            try:
+                url = f"{self.base_url}/v1/text-to-speech/{voice_id}/with-timestamps"
+                payload = {
+                    "model_id": model_id,
+                    "text": text,
+                    "output_format": "mp3_44100_192",
+                    "voice_settings": voice_settings,
+                    "return_alignment": True
+                }
 
+                # 🕵️ Debug: Kiểm tra giá trị API key và headers thật sự
+                logger.warning(f"[DEBUG] ELEVENLABS_API_KEY from env: {os.getenv('ELEVENLABS_API_KEY')}")
+                logger.warning(f"[DEBUG] ELEVENLABS_API_KEY in self: {self.api_key}")
+                logger.warning(f"[DEBUG] Request headers: {self.session.headers}")
+
+                response = self.session.post(url, json=payload, timeout=60)
+                response.raise_for_status()
+
+                return response.json()
+
+            except requests.exceptions.RequestException as e:
+                logger.error(f"TTS synthesis failed: {e}")
+                if e.response is not None:
+                    logger.error(f"Response: {e.response.status_code} - {e.response.text}")
+                return None
+            except Exception as e:
+                logger.error(f"Unexpected error during synthesis: {e}")
+                return None
 class AudioService:
     def __init__(self):
         self.root_dir = os.path.abspath(os.path.dirname(__file__))
